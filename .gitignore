@@ -1,0 +1,45 @@
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+
+# Python environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and build output
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data/model artifacts generated during experiments
+data/01_cleaned/*.npy
+data/01_cleaned/*embeddings*
+models/
+checkpoints/
+runs/
+wandb/
+mlruns/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+!.vscode/settings.json

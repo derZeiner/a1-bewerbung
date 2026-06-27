@@ -1,0 +1,41 @@
+prefix_rule(
+    pattern = ["pytest"],
+    decision = "prompt",
+    justification = "Tests only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["python", "-m", "pytest"],
+    decision = "prompt",
+    justification = "Tests only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["npm", "test"],
+    decision = "prompt",
+    justification = "Tests only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "test"],
+    decision = "prompt",
+    justification = "Tests only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["yarn", "test"],
+    decision = "prompt",
+    justification = "Tests only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["tox"],
+    decision = "prompt",
+    justification = "Validation environments only run after explicit user approval.",
+)
+
+prefix_rule(
+    pattern = ["nox"],
+    decision = "prompt",
+    justification = "Validation environments only run after explicit user approval.",
+)
