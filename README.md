@@ -62,12 +62,26 @@ Verglichene Modelle:
 
 - `DummyClassifier` als Baseline
 - `MultinomialNB` als klassische Text-Baseline
-- `LogisticRegression` als interpretierbares Hauptmodell
-- `LinearSVC` als robuster Vergleich für sparse TF-IDF-Features
+- `LogisticRegression` jeweils mit Count-Features und TF-IDF
+- `LinearSVC` jeweils mit Count-Features und TF-IDF
 - optional `DistilBERT`/BERT-ähnlicher Transformer als Deep-Learning-Vergleich
 - optional LSTM auf tokenisierten SMS als sequenzieller Neural-Baseline
 
+Die `Dummy majority baseline` sagt immer die Mehrheitsklasse HAM voraus. Deshalb sind SPAM-Precision, SPAM-Recall und SPAM-F1 dort absichtlich 0; sie zeigt, wie wenig reine Accuracy bei unausgeglichenen Klassen aussagt.
+
 Der klassische Teil bleibt lokal und schnell ausführbar. Die Deep-Learning-Zellen in `04_1_classic_ml.ipynb` sind als zusätzliche Experimente gekennzeichnet; sie benötigen `torch` und `transformers` und laufen mit CUDA, falls verfügbar. xLSTM wird im Notebook als Option eingeordnet, aber nicht als harte Dependency verwendet, weil es kein stabiler Standardbestandteil der üblichen Python-ML-Bibliotheken ist.
+
+`04_1_classic_ml.ipynb` nutzt für Modellwahl und Deep Learning einen stratified Train/Validation/Test Split. Validation wählt das beste klassische Modell und steuert Early Stopping bei LSTM/DistilBERT; der Test-Split wird erst am Ende für die finale Bewertung verwendet.
+
+Am Ende von `04_1_classic_ml.ipynb` wird eine gemeinsame Test-Vergleichstabelle erzeugt. Sie enthält alle klassischen Modelle sowie LSTM und DistilBERT, sofern die jeweiligen Deep-Learning-Zellen ausgeführt wurden.
+
+Für den DistilBERT-Download kann optional ein Hugging-Face-Token gesetzt werden. Ohne Token funktioniert der Download meist trotzdem, aber mit niedrigeren Rate Limits:
+
+```text
+HF_TOKEN=hf_...
+```
+
+Falls Jupyter eine `IProgress not found`-Warnung von `tqdm` zeigt, `ipywidgets` aus `requirements.txt` installieren und den Kernel neu starten.
 
 ## Aufgabe 4.2: externe Embeddings
 
