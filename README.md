@@ -4,7 +4,7 @@ Diese Abgabe enthält eine klassische lokale ML/Data-Science-Lösung für Aufgab
 
 ## Setup
 
-Die vorhandene `.venv` war in dieser Umgebung nicht zuverlässig startbar. Empfohlen ist deshalb eine frische virtuelle Umgebung:
+Empfohlen ist eine frische virtuelle Umgebung:
 
 ```powershell
 python -m venv .venv
@@ -43,7 +43,8 @@ python -m pip install -r requirements.txt
 3. `04_2_genai_clustering.ipynb`
    - erzeugt SMS-Embeddings über eine externe OpenAI-kompatible Embeddings-API,
    - cached Embeddings lokal unter `data/01_cleaned`,
-   - clustert die SMS semantisch mit KMeans und interpretiert die Cluster.
+   - clustert die SMS semantisch mit KMeans und interpretiert die Cluster,
+   - kann per `COMPARE_SMALL_AND_LARGE` `text-embedding-3-small` und `text-embedding-3-large` vergleichen.
 
 ## Aufgabe 4.1: lokal und klassisch
 
@@ -68,6 +69,8 @@ Verglichene Modelle:
 - optional LSTM auf tokenisierten SMS als sequenzieller Neural-Baseline
 
 Die `Dummy majority baseline` sagt immer die Mehrheitsklasse HAM voraus. Deshalb sind SPAM-Precision, SPAM-Recall und SPAM-F1 dort absichtlich 0; sie zeigt, wie wenig reine Accuracy bei unausgeglichenen Klassen aussagt.
+
+Die `Dummy stratified baseline` sagt zufällig gemäß der Klassenverteilung im Trainingssplit voraus. Sie nutzt den SMS-Text ebenfalls nicht, produziert aber ungefähr so viele SPAM-Vorhersagen wie im Training vorkommen. Damit dient sie als Zufallsbaseline mit gleicher Klassenrate.
 
 Der klassische Teil bleibt lokal und schnell ausführbar. Die Deep-Learning-Zellen in `04_1_classic_ml.ipynb` sind als zusätzliche Experimente gekennzeichnet; sie benötigen `torch` und `transformers` und laufen mit CUDA, falls verfügbar. xLSTM wird im Notebook als Option eingeordnet, aber nicht als harte Dependency verwendet, weil es kein stabiler Standardbestandteil der üblichen Python-ML-Bibliotheken ist.
 
@@ -109,6 +112,8 @@ OPENAI_EMBEDDING_MODEL=...
 
 Embeddings werden als `.npy` gecacht. Wenn der Cache existiert, werden keine neuen API-Calls ausgeführt.
 
+In `04_2_genai_clustering.ipynb` steuert `COMPARE_SMALL_AND_LARGE`, ob zusätzlich zum primären Modell auch `text-embedding-3-large` berechnet und visualisiert wird. Large-Embeddings erzeugen einen separaten Cache und verursachen bei erstmaliger Ausführung zusätzliche API-Kosten.
+
 ## Daten
 
 Rohdaten werden nicht überschrieben. Der bereinigte Datensatz liegt unter:
@@ -124,3 +129,13 @@ Spalten:
 - `message`: UTF-8-korrekt gelesener SMS-Text
 
 Der Clean-CSV ist dedupliziert. Aktueller Stand: 5.159 Zeilen, davon 4.517 HAM und 642 SPAM.
+
+## Datensatzquelle und Zitation
+
+Verwendeter Datensatz: **SMS Spam Collection v.1**. Der Rohdatensatz enthält laut beiliegendem Readme 5.574 englische SMS-Nachrichten mit den Labels `ham` und `spam`, davon 4.827 legitime Nachrichten und 747 Spam-Nachrichten.
+
+Bitte bei Verwendung des Corpus die vom Datensatz angegebene Quelle zitieren:
+
+> Almeida, T.A., Gómez Hidalgo, J.M., Yamakami, A. Contributions to the study of SMS Spam Filtering: New Collection and Results. Proceedings of the 2011 ACM Symposium on Document Engineering (ACM DOCENG'11), Mountain View, CA, USA, 2011. (Under review)
+
+Das Rohdaten-Readme bittet außerdem darum, auf die Datensatz-Webseite zu verweisen: `http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/`.
